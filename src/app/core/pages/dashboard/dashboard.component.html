@@ -1,1 +1,11 @@
-<p>dashboard works!</p>
+<div class="info_cards" fxLayout="row wrap" fxLayoutGap="16px grid">
+  <app-card
+    fxFlex="25%"
+    fxFlex.md="33%"
+    fxFlex.sm="100%"
+    fxFlex.xs="100%"
+    *ngFor="let item of cardsData"
+    [CardConfig]="item.cardConfig"
+  >
+  </app-card>
+</div>

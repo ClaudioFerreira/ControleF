@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { CoreRoutingModule } from './core-routing.module';
 import { SharedModule } from '../shared/shared.module';
@@ -9,6 +10,6 @@ import { ContasRecorrentesComponent } from './pages/contas-recorrentes/contas-re
 
 @NgModule({
   declarations: [CoreComponent, DashboardComponent, ContasRecorrentesComponent],
-  imports: [CommonModule, CoreRoutingModule, SharedModule],
+  imports: [CommonModule, CoreRoutingModule, SharedModule, FlexLayoutModule],
 })
 export class CoredModule {}

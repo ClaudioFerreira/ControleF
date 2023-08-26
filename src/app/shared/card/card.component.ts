@@ -8,4 +8,5 @@ import { ICardHeaderData } from '../interfaces/card.interface';
 })
 export class CardComponent {
   @Input() CardHeaderData: ICardHeaderData | undefined;
+  @Input() CardConfig: any;
 }
