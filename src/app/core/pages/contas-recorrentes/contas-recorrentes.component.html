@@ -1,1 +1,21 @@
-<p>contas-recorrentes works!</p>
+<div class="recorrentes">
+  <h1 class="recorrentes--titulo">Contas Recorrentes</h1>
+  <div class="recorrentes__filtros">
+    <div class="recorrentes__filtros--meses">
+      <i class="bx bx-chevron-left"></i>
+      <span>
+        <i class='bx bxs-calendar-event'></i>
+        $mes
+      </span>
+      <i class="bx bx-chevron-right"></i>
+    </div>
+    <div class="recorrentes__filtros--adicionar">
+      <button class="button--primary">
+        <i class="bx bxs-add-to-queue"></i> Adicionar
+      </button>
+    </div>
+  </div>
+  <div class="recorrentes__table">
+    <app-contas-table [tableHeader]="tableHeader" [contasData]="contasData"></app-contas-table>
+  </div>
+</div>

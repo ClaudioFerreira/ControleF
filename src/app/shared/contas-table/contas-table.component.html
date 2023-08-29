@@ -1,0 +1,20 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th *ngFor="let item of tableHeader">{{item.name}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let conta of contasData">
+      <td>{{conta.descricao}}</td>
+      <td>{{conta.dataVencimento | date: 'dd/MM/yyyy' }}</td>
+      <td>{{conta.valor| currency: 'BRL' }}</td>
+      <td>
+        <span class="badge" [ngClass]="conta.pago? 'badge--success':'badge--danger' ">
+          {{conta.pago ? 'Pago':'Pagar'}}
+        </span>
+      </td>
+      <td>{{conta.observacoes}}</td>
+    </tr>
+  </tbody>
+</table>
