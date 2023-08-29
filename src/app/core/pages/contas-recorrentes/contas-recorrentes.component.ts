@@ -14,7 +14,7 @@ export class ContasRecorrentesComponent {
     { name: 'Descricao' },
     { name: 'Vencimento' },
     { name: 'Valor' },
-    { name: 'Pago' },
+    // { name: 'Pago' },
     { name: 'Observacoes' },
   ];
 
@@ -23,14 +23,14 @@ export class ContasRecorrentesComponent {
       descricao: 'Energia',
       dataVencimento: Date.now().toString(),
       valor: 123.42,
-      pago: true,
+      // pago: true,
       observacoes: 'Observacoes',
     },
     {
       descricao: 'Agua',
       dataVencimento: Date.now().toString(),
       valor: 100.42,
-      pago: false,
+      // pago: false,
       observacoes: 'Observacoes',
     },
   ];

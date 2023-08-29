@@ -9,7 +9,7 @@
       <td>{{conta.descricao}}</td>
       <td>{{conta.dataVencimento | date: 'dd/MM/yyyy' }}</td>
       <td>{{conta.valor| currency: 'BRL' }}</td>
-      <td>
+      <td *ngIf="conta?.pago != null">
         <span class="badge" [ngClass]="conta.pago? 'badge--success':'badge--danger' ">
           {{conta.pago ? 'Pago':'Pagar'}}
         </span>

@@ -8,6 +8,6 @@ export interface contasData
     descricao: string;
     dataVencimento: string;
     valor: number;
-    pago: boolean;
+    pago?: boolean;
     observacoes: string;
   }> {}
