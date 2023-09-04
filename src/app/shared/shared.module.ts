@@ -6,11 +6,22 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CardComponent } from './card/card.component';
 import { ContasTableComponent } from './contas-table/contas-table.component';
+import { ModalCadastroContaComponent } from './modal/modal-cadastro-conta.component';
 
 @NgModule({
-  declarations: [SidenavComponent, CardComponent, ContasTableComponent],
+  declarations: [
+    SidenavComponent,
+    CardComponent,
+    ContasTableComponent,
+    ModalCadastroContaComponent,
+  ],
   imports: [CommonModule, RouterModule],
-  exports: [SidenavComponent, CardComponent, ContasTableComponent],
+  exports: [
+    SidenavComponent,
+    CardComponent,
+    ContasTableComponent,
+    ModalCadastroContaComponent,
+  ],
   providers: [BrowserModule, BrowserAnimationsModule],
 })
 export class SharedModule {}

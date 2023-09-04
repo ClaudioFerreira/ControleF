@@ -7,9 +7,16 @@ import { SharedModule } from '../shared/shared.module';
 import { CoreComponent } from './container/core.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ContasRecorrentesComponent } from './pages/contas-recorrentes/contas-recorrentes.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [CoreComponent, DashboardComponent, ContasRecorrentesComponent],
-  imports: [CommonModule, CoreRoutingModule, SharedModule, FlexLayoutModule],
+  imports: [
+    CommonModule,
+    CoreRoutingModule,
+    SharedModule,
+    FlexLayoutModule,
+    ReactiveFormsModule,
+  ],
 })
 export class CoredModule {}

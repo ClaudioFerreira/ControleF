@@ -14,7 +14,7 @@
       <i class="bx bx-chevron-right"></i>
     </div> -->
     <div class="recorrentes__filtros--adicionar">
-      <button class="button--primary">
+      <button class="button--primary" (click)="abreFechaModal()">
         <i class="bx bxs-add-to-queue"></i> Adicionar
       </button>
     </div>
@@ -23,3 +23,30 @@
     <app-contas-table [tableHeader]="tableHeader" [contasData]="contasData"></app-contas-table>
   </div>
 </div>
+
+<app-modal-cadastro-conta [open]="modalAberto" [title]="'Cadastrar nova conta'" (fechaModalEmit)="abreFechaModal()">
+  <form (ngSubmit)="onSubmit()" [formGroup]="formCadastroConta">
+    <label>
+      Descrição
+      <input class="input input--lined" type="text" placeholder="Informe a descrição da conta" id="descricao"
+      formControlName="descricao">
+    </label>
+    <div class="colulas">
+      <label>
+        Data Vencimento
+      <input class="input input--lined" type="date" placeholder="Informe a data de vencimento" id="data"
+        formControlName="dataVencimento">
+      </label>
+      <label>
+        Valor médio
+      <input class="input input--lined" type="text" placeholder="Informe o valor medio" id="valor"
+        formControlName="valor" [ngModel]="formCadastroConta.value.valor | currency: 'R$ ' ">
+      </label>
+    </div>
+    <label>
+      Observacoes
+    <textarea class="input input--lined" name="observacoes" id="" cols="30" rows="10"
+      formControlName="observacoes"></textarea>
+    </label>
+  </form>
+</app-modal-cadastro-conta>

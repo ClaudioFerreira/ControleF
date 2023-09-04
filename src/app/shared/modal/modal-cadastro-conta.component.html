@@ -1,0 +1,17 @@
+<section *ngIf="open">
+  <div class="backdrop" (click)="fecharModal()"></div>
+  <div class="modal {{size}}">
+    <div class="modal__header">
+      <h3>
+        {{title}}
+      </h3>
+      <button class="button--ghost" (click)="fecharModal()">
+        <i class='bx bx-x'></i>
+      </button>
+    </div>
+    <div class="modal__body">
+      <ng-content></ng-content>
+    </div>
+    <div class="modal__footer"></div>
+  </div>
+</section>

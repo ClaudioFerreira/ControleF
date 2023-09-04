@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Contas } from 'src/app/shared/class/contas';
 import {
   contasData,
   tableHeader,
@@ -9,7 +11,8 @@ import {
   templateUrl: './contas-recorrentes.component.html',
   styleUrls: ['./contas-recorrentes.component.scss'],
 })
-export class ContasRecorrentesComponent {
+export class ContasRecorrentesComponent implements OnInit {
+  formCadastroConta!: FormGroup;
   tableHeader: tableHeader = [
     { name: 'Descricao' },
     { name: 'Vencimento' },
@@ -34,4 +37,27 @@ export class ContasRecorrentesComponent {
       observacoes: 'Observacoes',
     },
   ];
+
+  modalAberto = false;
+
+  constructor(private fb: FormBuilder) {}
+
+  ngOnInit(): void {
+    this.createForm(new Contas());
+  }
+
+  createForm(conta: Contas) {
+    this.formCadastroConta = this.fb.group({
+      descricao: [conta.descricao, [Validators.required]],
+      dataVencimento: [conta.dataVencimento, [Validators.required]],
+      valor: [conta.valor],
+      observacoes: [conta.observacoes],
+    });
+  }
+
+  abreFechaModal() {
+    this.modalAberto = !this.modalAberto;
+  }
+
+  onSubmit() {}
 }

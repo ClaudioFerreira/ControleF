@@ -35,3 +35,29 @@
     //   }
   }
 }
+
+app-modal-cadastro-conta {
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    width: 100%;
+
+    label {
+      font-size: 14px;
+      color: #5b5b5b;
+    }
+
+    .colulas {
+      display: flex;
+      flex-direction: row;
+      gap: 16px;
+
+      label {
+        width: 100%;
+        font-size: 14px;
+        color: #5b5b5b;
+      }
+    }
+  }
+}
