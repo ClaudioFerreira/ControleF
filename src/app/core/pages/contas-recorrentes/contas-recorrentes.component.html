@@ -29,24 +29,27 @@
     <label>
       Descrição
       <input class="input input--lined" type="text" placeholder="Informe a descrição da conta" id="descricao"
-      formControlName="descricao">
+        formControlName="descricao">
     </label>
     <div class="colulas">
       <label>
         Data Vencimento
-      <input class="input input--lined" type="date" placeholder="Informe a data de vencimento" id="data"
-        formControlName="dataVencimento">
+        <input class="input input--lined" type="date" placeholder="Informe a data de vencimento" id="data"
+          formControlName="dataVencimento">
       </label>
       <label>
         Valor médio
-      <input class="input input--lined" type="text" placeholder="Informe o valor medio" id="valor"
-        formControlName="valor" [ngModel]="formCadastroConta.value.valor | currency: 'R$ ' ">
+        <input class="input input--lined" type="text" placeholder="Informe o valor medio" id="valor"
+          formControlName="valor" [ngModel]="formCadastroConta.value.valor | currency: 'R$ ' ">
       </label>
     </div>
     <label>
       Observacoes
-    <textarea class="input input--lined" name="observacoes" id="" cols="30" rows="10"
-      formControlName="observacoes"></textarea>
+      <textarea class="input input--lined" name="observacoes" id="" cols="30" rows="10"
+        formControlName="observacoes"></textarea>
     </label>
+    <button type="submit" class="button--primary">
+      Cadastrar
+    </button>
   </form>
 </app-modal-cadastro-conta>
