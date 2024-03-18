@@ -1,0 +1,17 @@
+@mixin phone-only {
+  @media screen and (max-width: 576px) {
+    @content;
+  }
+}
+
+@mixin tablet-only {
+  @media screen and (min-width: 577px) and (max-width: 959px) {
+    @content;
+  }
+}
+
+@mixin lg-desktop-only {
+  @media screen and (min-width: 960px) and (max-width: 1199px) {
+    @content;
+  }
+}
