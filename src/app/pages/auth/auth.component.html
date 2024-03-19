@@ -1,0 +1,20 @@
+<main class="login g-center" id="login">
+  <div class="login-card" id="login-card">
+    <app-card>
+      <form (ngSubmit)="onSubmit()" [formGroup]="authForm">
+        <img src="logo" alt="logo" />
+        <input
+          type="email"
+          class="input input--lined"
+          formControlName="email"
+        />
+        <input
+          type="password"
+          class="input input--lined"
+          formControlName="pass"
+        />
+        <button type="submit" class="btn btn--primary">ENTRAR</button>
+      </form>
+    </app-card>
+  </div>
+</main>
