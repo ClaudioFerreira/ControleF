@@ -1,0 +1,39 @@
+@import "./colors.variables.scss";
+
+.input {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 48px;
+  padding: 6px 40px 6px 16px;
+  background: none;
+  color: $black;
+  font-size: 14px;
+  letter-spacing: -0.018em;
+  outline: none;
+  transition: 0.2s;
+
+  &--boxed {
+    border: 1px solid $gray-lighter;
+    border-radius: 16px;
+  }
+  &--boxed:focus {
+    transform: scale(1.02);
+    border: 1px solid $primary;
+  }
+
+  &--lined {
+    border: 0;
+    border-bottom: 2px solid $gray-lighter;
+    border-radius: 0;
+  }
+  &--lined:focus {
+    border: 0;
+    transform: scale(1.02);
+    border-bottom: 2px solid $primary;
+  }
+  &--lined:invalid {
+    color: $danger;
+    border-bottom: 2px solid $danger;
+  }
+}
