@@ -4,14 +4,23 @@
 @import "./styles/input.styles.scss";
 @import "./styles/button.styles.scss";
 
-body {
-  box-sizing: border-box;
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  background-color: $backgound;
 }
 
 .g-center {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.g-display-none {
+  display: none;
 }
