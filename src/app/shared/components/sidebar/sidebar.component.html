@@ -1,0 +1,49 @@
+<nav class="sidebar" id="sidebar" [ngClass]="sidebarExtend() ? 'open' : ''">
+  <div class="sidebar_content" id="sidebar_content">
+    <div class="user" id="user">
+      <img
+        [src]="userInfos.img"
+        alt="Avatar"
+        class="user_avatar"
+        id="user_avatar"
+      />
+      <p class="user_infos" id="user_infos">
+        <span class="item_description" id="item_description">
+          {{ userInfos.name }}
+        </span>
+        <span class="item_description" id="item_description">
+          {{ userInfos.description }}
+        </span>
+      </p>
+    </div>
+
+    <ul class="side_items" id="side_items">
+      @for (item of menuContent; track $index) {
+      <li
+        class="side_item"
+        id="side_item"
+        [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <a [routerLink]="item.link">
+          <i [class]="item.icon"></i>
+          <span class="item_description" id="item_description">
+            {{ item.value }}
+          </span>
+        </a>
+      </li>
+      }
+    </ul>
+
+    <button class="open_btn" id="open_btn" (click)="toggleSidebar()">
+      <i class="bx bx-chevrons-left" id="open_btn_icon"></i>
+    </button>
+  </div>
+
+  <div class="sidebar_logout" id="sidebar_logout">
+    <button class="logout_btn" id="logout_btn">
+      <i class="bx bx-log-out" id="logout_btn_icon"></i>
+      <span class="item_description" id="item_description"> Logout </span>
+    </button>
+  </div>
+</nav>

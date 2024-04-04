@@ -1,0 +1,160 @@
+@import "../../../../styles/colors.variables.scss";
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+
+  background-color: $white;
+  border-radius: 0 18px 18px 0;
+  position: relative;
+  transition: all 0.5s;
+  min-width: 82px;
+  box-shadow: 8px 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+  &_content {
+    padding: 14px;
+
+    .user {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 24px;
+
+      &_avatar {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 20px;
+      }
+
+      &_infos {
+        display: flex;
+        flex-direction: column;
+
+        span:last-child {
+          color: #6b6b6b;
+          font-size: 12px;
+        }
+      }
+    }
+
+    .side_items {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      list-style: none;
+
+      .side_item {
+        border-radius: 8px;
+        padding: 14px;
+        cursor: pointer;
+
+        a {
+          text-decoration: none;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: $tertiary;
+
+          i {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+          }
+        }
+      }
+      .side_item.active {
+        background-color: $primary;
+
+        a {
+          color: $white;
+        }
+      }
+      .side_item:hover:not(.active) {
+        background-color: $backgound;
+
+        a {
+          color: $black;
+        }
+      }
+    }
+
+    .open_btn {
+      position: absolute;
+      top: 30px;
+      right: -10px;
+      background-color: $primary;
+      color: $white;
+      border-radius: 100%;
+      width: 20px;
+      height: 20px;
+      border: none;
+      cursor: pointer;
+
+      i {
+        transition: transform 0.3s ease;
+      }
+    }
+  }
+
+  &_logout {
+    border-top: 1px solid $gray-lighter;
+    padding: 12px;
+
+    .logout_btn {
+      border: none;
+      padding: 12px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      text-align: start;
+      cursor: pointer;
+      background-color: transparent;
+      width: 100%;
+    }
+
+    .logout_btn:hover:not(.active) {
+      background-color: $backgound;
+    }
+  }
+
+  .item_description {
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    transition: width 0.6s;
+  }
+}
+
+// Open
+.sidebar.open {
+  min-width: 200px;
+
+  .item_description {
+    width: 150px;
+    height: auto;
+  }
+
+  .side_item a {
+    justify-content: flex-start;
+    gap: 14px;
+  }
+
+  .open_btn i {
+    transform: rotate(180deg);
+  }
+
+  .logout_btn {
+    gap: 20px;
+    justify-content: start;
+  }
+}
