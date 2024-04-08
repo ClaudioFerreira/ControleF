@@ -1,8 +1,29 @@
+@import "../../../styles/colors.variables.scss";
+
 .home {
-  display: flex;
-  min-height: 100vh;
+  display: grid;
+  grid-template-columns: max-content 1fr;
 
   main {
-    padding: 20px;
+    padding: 3rem;
+
+    .indicadores {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(10rem, auto));
+      gap: 1.2rem;
+      padding: 2rem 0;
+      width: 100%;
+    }
+
+    .contas {
+      .title {
+        color: $gray-dark;
+      }
+    }
   }
+}
+
+hr {
+  border: 1px solid $gray-lighter;
+  margin-bottom: 1.2rem;
 }

@@ -2,6 +2,19 @@
   <app-sidebar></app-sidebar>
 
   <main>
-    <p>home works!</p>
+    <section class="indicadores">
+      @for (card of acompanhamentos; track $index) {
+      <app-card>
+        <div class="cards_content">
+          <small>{{ card.nome }}</small>
+          <h3>{{ card.valor }}</h3>
+        </div>
+      </app-card>
+      }
+    </section>
+    <section class="contas">
+      <hr />
+      <h2 class="title">Contas do mes</h2>
+    </section>
   </main>
 </div>
