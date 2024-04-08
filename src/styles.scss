@@ -10,9 +10,14 @@
   box-sizing: border-box;
 }
 
+:root {
+  font-size: 62.5% /*10px = 1rem */;
+}
+
 body {
   min-height: 100vh;
   background-color: $backgound;
+  font-size: 1.6rem;
 }
 
 .g-center {
