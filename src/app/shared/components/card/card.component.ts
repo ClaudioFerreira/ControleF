@@ -10,4 +10,10 @@ import { Component, Input } from '@angular/core';
 export class CardComponent {
   @Input()
   tagId: string = '';
+
+  @Input()
+  variant: 'success' | 'alert' | 'danger' | 'default' = 'default';
+
+  @Input()
+  size: 'flex' | 'lg' | 'md' | 'sm' = 'flex';
 }
