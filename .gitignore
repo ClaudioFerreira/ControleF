@@ -8,8 +8,16 @@
 
 # Node
 /node_modules
+node_modules/
 npm-debug.log
 yarn-error.log
+
+# Backend
+/backend/node_modules
+/backend/dist
+
+# Prisma
+/backend/prisma/migrations/*.sql
 
 # IDEs and editors
 .idea/
@@ -40,3 +48,6 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Env files
+.env

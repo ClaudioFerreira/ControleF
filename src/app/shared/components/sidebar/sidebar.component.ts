@@ -20,22 +20,14 @@ export class SidebarComponent {
   };
 
   sidebarExtend = signal(false);
+
   menuContent = [
-    {
-      icon: 'bx bxs-dashboard',
-      value: 'Home',
-      link: RotasEnum.HOME,
-    },
-    {
-      icon: 'bx bxs-invader',
-      value: 'Item 1',
-      link: 'item',
-    },
-    {
-      icon: 'bx bxs-cog',
-      value: 'Configurações',
-      link: RotasEnum.CONFIGURACOES,
-    },
+    { icon: 'bx bxs-dashboard', value: 'Dashboard', link: RotasEnum.HOME },
+    { icon: 'bx bxs-receipt', value: 'Contas Recorrentes', link: RotasEnum.ACCOUNTS },
+    { icon: 'bx bxs-credit-card', value: 'Parceladas', link: RotasEnum.INSTALLMENTS },
+    { icon: 'bx bxs-wallet', value: 'Gastos', link: RotasEnum.EXPENSES },
+    { icon: 'bx bxs-chart', value: 'Investimentos', link: RotasEnum.INVESTMENTS },
+    { icon: 'bx bxs-calendar-check', value: 'Controle Mensal', link: RotasEnum.MONTHLY_CONTROL },
   ];
 
   toggleSidebar() {

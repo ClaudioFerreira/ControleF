@@ -1,0 +1,89 @@
+<div class="page-layout">
+  <app-sidebar></app-sidebar>
+
+  <main class="page-content">
+    <header class="page-header">
+      <h1>Contas Recorrentes</h1>
+      <button class="btn btn--primary btn--sm" (click)="openForm()">+ Nova Conta</button>
+    </header>
+
+    <!-- Formulário inline -->
+    @if (showForm) {
+    <app-card>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-grid">
+        <h3>{{ editingId ? 'Editar' : 'Nova' }} Conta Recorrente</h3>
+
+        <div class="form-row">
+          <label>Nome</label>
+          <input class="input input--boxed" formControlName="name" placeholder="Ex: Conta de Energia" />
+        </div>
+
+        <div class="form-row">
+          <label>Categoria</label>
+          <select class="input input--boxed" formControlName="category">
+            @for (cat of categories; track cat.value) {
+              <option [value]="cat.value">{{ cat.label }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label>Valor Médio (R$)</label>
+          <input class="input input--boxed" type="number" step="0.01" formControlName="averageValue" />
+        </div>
+
+        <div class="form-row">
+          <label>Dia de Vencimento</label>
+          <input class="input input--boxed" type="number" min="1" max="31" formControlName="dueDay" />
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn--tertiary btn--sm" (click)="closeForm()">Cancelar</button>
+          <button type="submit" class="btn btn--primary btn--sm" [disabled]="form.invalid">Salvar</button>
+        </div>
+      </form>
+    </app-card>
+    }
+
+    <!-- Lista -->
+    @if (isLoading) {
+      <p class="loading-text">Carregando...</p>
+    } @else if (accounts.length === 0) {
+      <p class="empty-text">Nenhuma conta recorrente cadastrada.</p>
+    } @else {
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Categoria</th>
+              <th>Valor Médio</th>
+              <th>Vencimento</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (account of accounts; track account.id) {
+            <tr>
+              <td>{{ account.name }}</td>
+              <td>{{ categoryLabels[account.category] }}</td>
+              <td>{{ account.averageValue | currency:'BRL':'symbol':'1.2-2' }}</td>
+              <td>Dia {{ account.dueDay }}</td>
+              <td>
+                <span class="badge" [class.badge--success]="account.isActive" [class.badge--danger]="!account.isActive">
+                  {{ account.isActive ? 'Ativa' : 'Inativa' }}
+                </span>
+              </td>
+              <td class="actions">
+                <button class="btn-icon" title="Editar" (click)="openForm(account)">✏️</button>
+                <button class="btn-icon btn-icon--danger" title="Remover" (click)="delete(account.id)">🗑️</button>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </main>
+</div>

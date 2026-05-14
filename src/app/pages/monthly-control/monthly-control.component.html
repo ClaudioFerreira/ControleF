@@ -1,0 +1,105 @@
+<div class="page-layout">
+  <app-sidebar></app-sidebar>
+
+  <main class="page-content">
+    <!-- Navegação de mês -->
+    <header class="page-header">
+      <h1>Controle Mensal</h1>
+      <div class="month-nav">
+        <button class="btn btn--secondary btn--sm" (click)="previousMonth()">‹</button>
+        <select class="input input--boxed" [(ngModel)]="selectedMonth" (change)="onMonthYearChange()">
+          @for (m of months; track m.value) {
+            <option [value]="m.value">{{ m.label }}</option>
+          }
+        </select>
+        <select class="input input--boxed" [(ngModel)]="selectedYear" (change)="onMonthYearChange()">
+          @for (y of years; track y) {
+            <option [value]="y">{{ y }}</option>
+          }
+        </select>
+        <button class="btn btn--secondary btn--sm" (click)="nextMonth()">›</button>
+      </div>
+    </header>
+
+    @if (isLoading) {
+      <p class="loading-text">Carregando...</p>
+    } @else if (!snapshot) {
+      <div class="no-snapshot">
+        <p>Nenhum snapshot gerado para este mês.</p>
+        <button class="btn btn--primary btn--md" (click)="generateSnapshot()">Gerar Controle do Mês</button>
+      </div>
+    } @else {
+      <!-- Cards resumo -->
+      <section class="summary-cards">
+        <app-card>
+          <div class="summary-card">
+            <small>Total do Mês</small>
+            <h3>{{ snapshot.totalBills | currency:'BRL':'symbol':'1.2-2' }}</h3>
+          </div>
+        </app-card>
+        <app-card variant="success">
+          <div class="summary-card">
+            <small>Pago</small>
+            <h3>{{ snapshot.totalPaid | currency:'BRL':'symbol':'1.2-2' }}</h3>
+          </div>
+        </app-card>
+        <app-card variant="alert">
+          <div class="summary-card">
+            <small>Pendente</small>
+            <h3>{{ snapshot.totalPending | currency:'BRL':'symbol':'1.2-2' }}</h3>
+          </div>
+        </app-card>
+        @if (snapshot.income) {
+        <app-card>
+          <div class="summary-card">
+            <small>Renda</small>
+            <h3>{{ snapshot.income | currency:'BRL':'symbol':'1.2-2' }}</h3>
+          </div>
+        </app-card>
+        }
+      </section>
+
+      <!-- Barra de progresso -->
+      <div class="progress-section">
+        <span>Progresso de pagamentos: {{ progressPercent }}%</span>
+        <div class="progress-bar progress-bar--lg">
+          <div class="progress-fill" [style.width.%]="progressPercent"></div>
+        </div>
+      </div>
+
+      <!-- Entradas pendentes -->
+      @if (pendingEntries.length > 0) {
+      <section class="entries-section">
+        <h2>⏳ Pendentes</h2>
+        <div class="entries-list">
+          @for (entry of pendingEntries; track entry.id) {
+          <div class="entry-item entry-item--pending">
+            <span class="entry-name">{{ entry.name }}</span>
+            <span class="entry-date">{{ entry.dueDate | date:'dd/MM' }}</span>
+            <span class="entry-value">{{ entry.value | currency:'BRL':'symbol':'1.2-2' }}</span>
+            <button class="badge badge--alert" (click)="toggleEntryStatus(entry)">Marcar como Pago</button>
+          </div>
+          }
+        </div>
+      </section>
+      }
+
+      <!-- Entradas pagas -->
+      @if (paidEntries.length > 0) {
+      <section class="entries-section">
+        <h2>✅ Pagos</h2>
+        <div class="entries-list">
+          @for (entry of paidEntries; track entry.id) {
+          <div class="entry-item entry-item--paid">
+            <span class="entry-name">{{ entry.name }}</span>
+            <span class="entry-date">{{ entry.dueDate | date:'dd/MM' }}</span>
+            <span class="entry-value">{{ entry.value | currency:'BRL':'symbol':'1.2-2' }}</span>
+            <button class="badge badge--success" (click)="toggleEntryStatus(entry)">Pago ✓</button>
+          </div>
+          }
+        </div>
+      </section>
+      }
+    }
+  </main>
+</div>

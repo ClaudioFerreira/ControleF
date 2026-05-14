@@ -2,19 +2,81 @@
   <app-sidebar></app-sidebar>
 
   <main>
+    <header class="page-header" style="padding: 3rem 3rem 0">
+      <h1 style="font-size:2.4rem; color:#333; font-weight:700">Dashboard</h1>
+    </header>
+
+    @if (isLoading) {
+      <p style="padding:3rem; color:#4f5d75">Carregando resumo financeiro...</p>
+    } @else if (!summary) {
+      <div style="padding:3rem; text-align:center; color:#4f5d75">
+        <p>Sem dados para o mês atual.</p>
+        <a [routerLink]="rotas.MONTHLY_CONTROL" style="color:#ef8354">Gerar controle do mês →</a>
+      </div>
+    } @else {
+
     <section class="indicadores">
-      @for (card of acompanhamentos; track $index) {
       <app-card>
         <div class="cards_content">
-          <small>{{ card.nome }}</small>
-          <h3>{{ card.valor }}</h3>
+          <small>Contas do Mês</small>
+          <h3>{{ summary.currentMonth.totalBills | currency:'BRL':'symbol':'1.2-2' }}</h3>
         </div>
       </app-card>
-      }
+      <app-card variant="success">
+        <div class="cards_content">
+          <small>Pago</small>
+          <h3>{{ summary.currentMonth.totalPaid | currency:'BRL':'symbol':'1.2-2' }}</h3>
+        </div>
+      </app-card>
+      <app-card variant="alert">
+        <div class="cards_content">
+          <small>Pendente</small>
+          <h3>{{ summary.currentMonth.totalPending | currency:'BRL':'symbol':'1.2-2' }}</h3>
+        </div>
+      </app-card>
+      <app-card>
+        <div class="cards_content">
+          <small>Investido (atual)</small>
+          <h3>{{ summary.investments.totalCurrent | currency:'BRL':'symbol':'1.2-2' }}</h3>
+        </div>
+      </app-card>
     </section>
+
     <section class="contas">
       <hr />
-      <h2 class="title">Contas do mes</h2>
+      <h2 class="title">Evolução Mensal</h2>
+      <div class="evolution-chart">
+        @for (item of summary.monthlyEvolution; track item.month) {
+          <div class="evolution-bar">
+            <div class="bar-wrapper">
+              <div class="bar bar--total" [style.height.%]="100" title="Total: {{ item.total | currency:'BRL' }}"></div>
+              <div class="bar bar--paid"
+                [style.height.%]="item.total > 0 ? (item.paid / item.total) * 100 : 0"
+                title="Pago: {{ item.paid | currency:'BRL' }}">
+              </div>
+            </div>
+            <span class="bar-label">{{ item.month }}</span>
+          </div>
+        }
+      </div>
     </section>
+
+    <section class="contas">
+      <hr />
+      <h2 class="title">Gastos por Categoria (mês atual)</h2>
+      <div class="categories-list">
+        @for (cat of summary.expensesByCategory; track cat.category) {
+          <div class="category-item">
+            <span class="cat-name">{{ cat.category }}</span>
+            <span class="cat-value">{{ cat.total | currency:'BRL':'symbol':'1.2-2' }}</span>
+          </div>
+        }
+        @if (summary.expensesByCategory.length === 0) {
+          <p style="color:#4f5d75; font-size:1.4rem">Nenhum gasto registrado este mês.</p>
+        }
+      </div>
+    </section>
+
+    }
   </main>
 </div>

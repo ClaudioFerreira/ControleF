@@ -1,0 +1,115 @@
+<div class="page-layout">
+  <app-sidebar></app-sidebar>
+
+  <main class="page-content">
+    <header class="page-header">
+      <h1>Investimentos</h1>
+      <button class="btn btn--primary btn--sm" (click)="openForm()">+ Novo Investimento</button>
+    </header>
+
+    <!-- Cards resumo -->
+    <section class="summary-cards">
+      <app-card>
+        <div class="summary-card">
+          <small>Total Investido</small>
+          <h3>{{ totalInvested | currency:'BRL':'symbol':'1.2-2' }}</h3>
+        </div>
+      </app-card>
+      <app-card>
+        <div class="summary-card">
+          <small>Valor Atual</small>
+          <h3>{{ totalCurrent | currency:'BRL':'symbol':'1.2-2' }}</h3>
+        </div>
+      </app-card>
+      <app-card [variant]="totalGain >= 0 ? 'success' : 'danger'">
+        <div class="summary-card">
+          <small>Rendimento</small>
+          <h3>{{ totalGain | currency:'BRL':'symbol':'1.2-2' }} ({{ gainPercent | number:'1.1-2' }}%)</h3>
+        </div>
+      </app-card>
+    </section>
+
+    <!-- Formulário inline -->
+    @if (showForm) {
+    <app-card>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-grid">
+        <h3>{{ editingId ? 'Editar' : 'Novo' }} Investimento</h3>
+
+        <div class="form-row">
+          <label>Nome</label>
+          <input class="input input--boxed" formControlName="name" placeholder="Ex: Tesouro Selic 2027" />
+        </div>
+        <div class="form-row">
+          <label>Tipo</label>
+          <select class="input input--boxed" formControlName="type">
+            @for (t of types; track t.value) {
+              <option [value]="t.value">{{ t.label }}</option>
+            }
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Valor Investido (R$)</label>
+          <input class="input input--boxed" type="number" step="0.01" formControlName="investedValue" />
+        </div>
+        <div class="form-row">
+          <label>Valor Atual (R$)</label>
+          <input class="input input--boxed" type="number" step="0.01" formControlName="currentValue" />
+        </div>
+        <div class="form-row">
+          <label>Data</label>
+          <input class="input input--boxed" type="date" formControlName="date" />
+        </div>
+        <div class="form-row form-row--full">
+          <label>Observação</label>
+          <input class="input input--boxed" formControlName="notes" placeholder="Opcional" />
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn--tertiary btn--sm" (click)="closeForm()">Cancelar</button>
+          <button type="submit" class="btn btn--primary btn--sm" [disabled]="form.invalid">Salvar</button>
+        </div>
+      </form>
+    </app-card>
+    }
+
+    @if (isLoading) {
+      <p class="loading-text">Carregando...</p>
+    } @else if (investments.length === 0) {
+      <p class="empty-text">Nenhum investimento cadastrado.</p>
+    } @else {
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Tipo</th>
+              <th>Investido</th>
+              <th>Atual</th>
+              <th>Rendimento</th>
+              <th>Data</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (inv of investments; track inv.id) {
+            <tr>
+              <td>{{ inv.name }}</td>
+              <td>{{ typeLabels[inv.type] }}</td>
+              <td>{{ inv.investedValue | currency:'BRL':'symbol':'1.2-2' }}</td>
+              <td>{{ inv.currentValue | currency:'BRL':'symbol':'1.2-2' }}</td>
+              <td [class.text-success]="inv.currentValue >= inv.investedValue" [class.text-danger]="inv.currentValue < inv.investedValue">
+                {{ (inv.currentValue - inv.investedValue) | currency:'BRL':'symbol':'1.2-2' }}
+              </td>
+              <td>{{ inv.date | date:'dd/MM/yyyy' }}</td>
+              <td class="actions">
+                <button class="btn-icon" (click)="openForm(inv)">✏️</button>
+                <button class="btn-icon btn-icon--danger" (click)="delete(inv.id)">🗑️</button>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </main>
+</div>

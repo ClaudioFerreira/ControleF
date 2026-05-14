@@ -5,25 +5,101 @@
   grid-template-columns: max-content 1fr;
 
   main {
-    padding: 3rem;
+    padding: 0 3rem 3rem;
 
     .indicadores {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(10rem, auto));
-      gap: 1.2rem;
+      grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+      gap: 1.6rem;
       padding: 2rem 0;
-      width: 100%;
+
+      .cards_content {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        width: 100%;
+
+        small { font-size: 1.2rem; color: $tertiary; }
+        h3    { font-size: 2rem; font-weight: 700; }
+      }
     }
 
     .contas {
       .title {
         color: $gray-dark;
+        font-size: 1.8rem;
+        margin-bottom: 1.6rem;
       }
     }
   }
 }
 
 hr {
-  border: 1px solid $gray-lighter;
-  margin-bottom: 1.2rem;
+  border: 1px solid #eee;
+  margin-bottom: 1.6rem;
 }
+
+// Gráfico de barras simples para evolução mensal
+.evolution-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.2rem;
+  height: 12rem;
+  padding: 1.6rem 0;
+}
+
+.evolution-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  flex: 1;
+}
+
+.bar-wrapper {
+  position: relative;
+  width: 100%;
+  height: 10rem;
+  background: #eee;
+  border-radius: 0.4rem;
+  overflow: hidden;
+}
+
+.bar {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  border-radius: 0.4rem;
+  transition: height 0.4s ease;
+
+  &--total { background: lighten($secondary, 40%); }
+  &--paid  { background: $primary; }
+}
+
+.bar-label {
+  font-size: 1rem;
+  color: $tertiary;
+  white-space: nowrap;
+}
+
+// Categorias
+.categories-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.category-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 1.6rem;
+  background: white;
+  border-radius: 0.6rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  font-size: 1.4rem;
+
+  .cat-name  { font-weight: 500; }
+  .cat-value { font-weight: 700; color: $primary; }
+}
+

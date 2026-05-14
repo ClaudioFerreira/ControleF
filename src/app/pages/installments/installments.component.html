@@ -1,0 +1,99 @@
+<div class="page-layout">
+  <app-sidebar></app-sidebar>
+
+  <main class="page-content">
+    <header class="page-header">
+      <h1>Contas Parceladas</h1>
+      <button class="btn btn--primary btn--sm" (click)="openForm()">+ Novo Parcelamento</button>
+    </header>
+
+    <!-- Formulário novo plano -->
+    @if (showForm) {
+    <app-card>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-grid">
+        <h3>{{ editingId ? 'Editar' : 'Novo' }} Parcelamento</h3>
+
+        <div class="form-row">
+          <label>Descrição</label>
+          <input class="input input--boxed" formControlName="name" placeholder="Ex: iPhone 15" />
+        </div>
+        <div class="form-row">
+          <label>Valor Total (R$)</label>
+          <input class="input input--boxed" type="number" step="0.01" formControlName="totalValue" />
+        </div>
+        <div class="form-row">
+          <label>Nº de Parcelas</label>
+          <input class="input input--boxed" type="number" min="1" formControlName="totalInstallments" />
+        </div>
+        <div class="form-row">
+          <label>Valor da Parcela (R$)</label>
+          <input class="input input--boxed" type="number" step="0.01" formControlName="installmentValue" />
+        </div>
+        <div class="form-row">
+          <label>Data de Início</label>
+          <input class="input input--boxed" type="date" formControlName="startDate" />
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn--tertiary btn--sm" (click)="closeForm()">Cancelar</button>
+          <button type="submit" class="btn btn--primary btn--sm" [disabled]="form.invalid">Salvar</button>
+        </div>
+      </form>
+    </app-card>
+    }
+
+    <div class="installments-layout">
+      <!-- Lista de planos -->
+      <div class="plans-list">
+        @if (isLoading) {
+          <p class="loading-text">Carregando...</p>
+        } @else if (plans.length === 0) {
+          <p class="empty-text">Nenhum parcelamento cadastrado.</p>
+        } @else {
+          @for (plan of plans; track plan.id) {
+          <app-card>
+            <div class="plan-card" [class.plan-card--active]="selectedPlan?.id === plan.id" (click)="selectPlan(plan)">
+              <div class="plan-info">
+                <strong>{{ plan.name }}</strong>
+                <span>{{ plan.installmentValue | currency:'BRL':'symbol':'1.2-2' }}/mês</span>
+              </div>
+              <div class="plan-progress">
+                <span class="progress-text">{{ plan.paidInstallments }}/{{ plan.totalInstallments }} parcelas</span>
+                <div class="progress-bar">
+                  <div class="progress-fill" [style.width.%]="getProgressPercent(plan)"></div>
+                </div>
+              </div>
+              <div class="plan-actions">
+                <button class="btn-icon" (click)="openForm(plan); $event.stopPropagation()">✏️</button>
+                <button class="btn-icon btn-icon--danger" (click)="delete(plan.id); $event.stopPropagation()">🗑️</button>
+              </div>
+            </div>
+          </app-card>
+          }
+        }
+      </div>
+
+      <!-- Detalhe das parcelas -->
+      @if (selectedPlan) {
+      <div class="installments-detail">
+        <h3>Parcelas — {{ selectedPlan.name }}</h3>
+        <div class="installments-grid">
+          @for (inst of installments; track inst.id) {
+          <div class="installment-item" [class.installment-item--paid]="inst.status === 'PAID'">
+            <span class="inst-number">{{ inst.installmentNumber }}ª</span>
+            <span class="inst-date">{{ inst.dueDate | date:'MM/yyyy' }}</span>
+            <span class="inst-value">{{ inst.value | currency:'BRL':'symbol':'1.2-2' }}</span>
+            <button class="badge"
+              [class.badge--success]="inst.status === 'PAID'"
+              [class.badge--alert]="inst.status === 'PENDING'"
+              (click)="toggleInstallmentStatus(inst)">
+              {{ inst.status === 'PAID' ? 'Pago' : 'Pendente' }}
+            </button>
+          </div>
+          }
+        </div>
+      </div>
+      }
+    </div>
+  </main>
+</div>

@@ -1,0 +1,204 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Enums
+// ─────────────────────────────────────────────────────────────
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  OVERDUE
+}
+
+enum AccountCategory {
+  WATER
+  ENERGY
+  INTERNET
+  RENT
+  PHONE
+  HEALTH
+  EDUCATION
+  OTHER
+}
+
+enum ExpenseCategory {
+  FOOD
+  TRANSPORT
+  HEALTH
+  LEISURE
+  CLOTHING
+  EDUCATION
+  OTHER
+}
+
+enum InvestmentType {
+  STOCKS
+  FIXED_INCOME
+  REAL_ESTATE
+  CRYPTO
+  SAVINGS
+  OTHER
+}
+
+enum MonthlyEntryType {
+  RECURRING
+  INSTALLMENT
+}
+
+// ─────────────────────────────────────────────────────────────
+// Contas Recorrentes (água, energia, internet...)
+// ─────────────────────────────────────────────────────────────
+
+model RecurringAccount {
+  id           String          @id @default(uuid())
+  name         String
+  category     AccountCategory @default(OTHER)
+  averageValue Decimal         @db.Decimal(10, 2)
+  dueDay       Int // dia do mês (1-31)
+  isActive     Boolean         @default(true)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  // Entradas nos controles mensais referenciando esta conta
+  monthlyEntries MonthlyEntry[]
+
+  @@map("recurring_accounts")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Plano de Parcelamento (ex: compra no cartão em 12x)
+// ─────────────────────────────────────────────────────────────
+
+model InstallmentPlan {
+  id                 String   @id @default(uuid())
+  name               String
+  totalValue         Decimal  @db.Decimal(10, 2)
+  totalInstallments  Int
+  installmentValue   Decimal  @db.Decimal(10, 2)
+  startDate          DateTime
+  paidInstallments   Int      @default(0)
+  isActive           Boolean  @default(true)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  installments Installment[]
+
+  @@map("installment_plans")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Parcela individual gerada a partir de um plano
+// ─────────────────────────────────────────────────────────────
+
+model Installment {
+  id                String        @id @default(uuid())
+  planId            String
+  installmentNumber Int
+  value             Decimal       @db.Decimal(10, 2)
+  dueDate           DateTime
+  status            PaymentStatus @default(PENDING)
+  paidAt            DateTime?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  plan           InstallmentPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  monthlyEntries MonthlyEntry[]
+
+  @@unique([planId, installmentNumber])
+  @@map("installments")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Gastos esporádicos / imprevistos
+// ─────────────────────────────────────────────────────────────
+
+model Expense {
+  id        String          @id @default(uuid())
+  name      String
+  value     Decimal         @db.Decimal(10, 2)
+  date      DateTime
+  category  ExpenseCategory @default(OTHER)
+  notes     String?
+  createdAt DateTime        @default(now())
+
+  @@map("expenses")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Investimentos
+// ─────────────────────────────────────────────────────────────
+
+model Investment {
+  id             String         @id @default(uuid())
+  name           String
+  type           InvestmentType @default(OTHER)
+  investedValue  Decimal        @db.Decimal(10, 2)
+  currentValue   Decimal        @db.Decimal(10, 2)
+  date           DateTime
+  notes          String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  @@map("investments")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Snapshot mensal — consolidado de um mês específico
+// ─────────────────────────────────────────────────────────────
+
+model MonthlySnapshot {
+  id             String   @id @default(uuid())
+  month          Int // 1-12
+  year           Int
+  totalBills     Decimal  @db.Decimal(10, 2) @default(0)
+  totalPaid      Decimal  @db.Decimal(10, 2) @default(0)
+  totalPending   Decimal  @db.Decimal(10, 2) @default(0)
+  totalExpenses  Decimal  @db.Decimal(10, 2) @default(0)
+  income         Decimal? @db.Decimal(10, 2)
+  notes          String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  entries MonthlyEntry[]
+
+  @@unique([month, year])
+  @@map("monthly_snapshots")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Entrada individual em um snapshot mensal
+// Pode referenciar uma conta recorrente OU uma parcela
+// ─────────────────────────────────────────────────────────────
+
+model MonthlyEntry {
+  id              String           @id @default(uuid())
+  snapshotId      String
+  referenceType   MonthlyEntryType
+  name            String
+  value           Decimal          @db.Decimal(10, 2)
+  dueDate         DateTime
+  status          PaymentStatus    @default(PENDING)
+  paidAt          DateTime?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  // Referências opcionais (apenas uma será preenchida por vez)
+  recurringAccountId String?
+  installmentId      String?
+
+  snapshot         MonthlySnapshot   @relation(fields: [snapshotId], references: [id], onDelete: Cascade)
+  recurringAccount RecurringAccount? @relation(fields: [recurringAccountId], references: [id])
+  installment      Installment?      @relation(fields: [installmentId], references: [id])
+
+  @@map("monthly_entries")
+}
