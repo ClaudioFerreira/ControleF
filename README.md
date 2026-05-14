@@ -1,5 +1,46 @@
 # ControleF
 
+Sistema de controle financeiro pessoal para homelab.
+
+## Estrutura
+
+```
+ControleF/
+├── frontend/   # Angular 17 — interface do usuário (porta 4200)
+├── backend/    # NestJS + Prisma 5 + PostgreSQL (porta 3000)
+└── docs/       # Documentação do projeto
+```
+
+## Quick start
+
+```bash
+# 1. PostgreSQL via Docker
+docker run --name controlef-db \
+  -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=controlef \
+  -p 5432:5432 -d postgres
+
+# 2. Backend
+cd backend && cp .env.example .env && npm install
+npm run prisma:push && npm run start:dev
+
+# 3. Frontend (outro terminal)
+cd frontend && npm install && npm start
+```
+
+- **Frontend**: http://localhost:4200
+- **API / Swagger**: http://localhost:3000/api
+
+## Documentação completa
+
+Consulte a pasta [`docs/`](./docs/README.md):
+
+- [Visão Geral](./docs/overview.md)
+- [Arquitetura](./docs/architecture.md)
+- [API Reference](./docs/api.md)
+- [Setup detalhado](./docs/setup.md)
+- [Banco de Dados](./docs/database.md)
+
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.1.1.
 
 ## Development server
